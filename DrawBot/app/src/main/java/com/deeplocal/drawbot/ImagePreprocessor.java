@@ -21,8 +21,6 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 
-import junit.framework.Assert;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -51,9 +49,6 @@ public class ImagePreprocessor {
         if (image == null) {
             return null;
         }
-
-        Assert.assertEquals("Invalid size width", rgbFrameBitmap.getWidth(), image.getWidth());
-        Assert.assertEquals("Invalid size height", rgbFrameBitmap.getHeight(), image.getHeight());
 
         if (croppedBitmap != null && rgbFrameBitmap != null) {
             ByteBuffer bb = image.getPlanes()[0].getBuffer();

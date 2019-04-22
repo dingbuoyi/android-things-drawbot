@@ -18,8 +18,8 @@ public class MovementControl {
     private static final double STEPS_PER_MM  = 2.721485;  // straight-line conversion
     private static final double STEPS_PER_DEG = 2.923;     // point-turn conversion
 
-    private static final String[] leftMotorPins = { "GPIO_10", "GPIO_35", "GPIO_33", "GPIO_128" };
-    private static final String[] rightMotorPins = { "GPIO_32", "GPIO_34", "GPIO_37", "GPIO_39" };
+    private static final String[] leftMotorPins = { "GPIO6_IO12", "GPIO6_IO13", "GPIO6_IO14", "GPIO6_IO15" };
+    private static final String[] rightMotorPins = { "GPIO2_IO03", "GPIO1_IO10", "GPIO2_IO00", "GPIO2_IO05" };
     private static final String penServoPin = "PWM2";
 
     private ULN2003 mLeftStepper;

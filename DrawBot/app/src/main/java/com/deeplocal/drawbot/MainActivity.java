@@ -16,20 +16,21 @@ import android.widget.TextView;
 
 import com.google.android.things.pio.Gpio;
 import com.google.android.things.pio.GpioCallback;
-import com.google.android.things.pio.PeripheralManagerService;
+import com.google.android.things.pio.PeripheralManager;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.core.Size;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity implements ImageReader.OnImageAvailableListener {
 
@@ -59,7 +60,7 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
 
     public static final String TAG = "drawbot";
 
-    private static final String BUTTON_PIN_NAME = "GPIO_174"; // GPIO port wired to the button
+    private static final String BUTTON_PIN_NAME = "GPIO2_IO01"; // GPIO port wired to the button
     private static final int DEBOUNCE_MILLIS = 333;
     private static final boolean UPDATE_SCREEN = false;
 
@@ -143,10 +144,16 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
 
         // initialize gpio input and set callback for falling edge
         try {
-            PeripheralManagerService manager = new PeripheralManagerService();
+            //PeripheralManagerService manager = new PeripheralManagerService();
+            PeripheralManager manager = PeripheralManager.getInstance();
 
             // button uses this as pullup
-            Gpio buttonPullupGpio = manager.openGpio("GPIO_175");
+            List<String> ss = manager.getGpioList();
+            for(String s:ss){
+                System.out.println(s);
+            }
+
+            Gpio buttonPullupGpio = manager.openGpio("GPIO2_IO02");
             buttonPullupGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_HIGH);
 
             mButtonGpio = manager.openGpio(BUTTON_PIN_NAME);
@@ -320,7 +327,7 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
                 }
             }, DEBOUNCE_MILLIS);
 
-            return super.onGpioEdge(gpio);
+            return onGpioEdge(gpio);
         }
 
         @Override

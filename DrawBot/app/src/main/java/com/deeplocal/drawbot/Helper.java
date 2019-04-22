@@ -20,9 +20,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.Log;
-import android.view.animation.TranslateAnimation;
-
-import junit.framework.Assert;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -60,7 +57,6 @@ public class Helper {
     }
 
     public static void cropAndRescaleBitmap(final Bitmap src, final Bitmap dst, int sensorOrientation) {
-        Assert.assertEquals(dst.getWidth(), dst.getHeight());
         final float minDim = Math.min(src.getWidth(), src.getHeight());
 
         final Matrix matrix = new Matrix();
