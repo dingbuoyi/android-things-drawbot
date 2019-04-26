@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -75,6 +77,7 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
     private TextView mInfoTextView;
     private SeekBar mAlphaSb, mBetaSb;
     private ImageView mImageView1;
+    private Button actionButton;
 
     private MovementControl mMovementControl;
     private PhysicalInterface mPhysicalInterface;
@@ -102,10 +105,12 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
 
         if (UPDATE_SCREEN) {
 
-            mInfoTextView = (TextView) findViewById(R.id.info_tv);
-            mImageView1 = (ImageView) findViewById(R.id.main_imageview_1);
-            mAlphaSb = ((SeekBar) findViewById(R.id.alpha_sb));
-            mBetaSb = ((SeekBar) findViewById(R.id.beta_sb));
+            mInfoTextView = findViewById(R.id.info_tv);
+            mImageView1 = findViewById(R.id.main_imageview_1);
+            mAlphaSb = findViewById(R.id.alpha_sb);
+            mBetaSb = findViewById(R.id.beta_sb);
+            actionButton = findViewById(R.id.action_button);
+
 
             mAlphaSb.setProgress((int) (mAlpha * 10));
             mAlphaSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -118,10 +123,12 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
                 }
 
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
 
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
             });
 
             mBetaSb.setProgress(mBeta);
@@ -135,10 +142,20 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
                 }
 
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
 
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+
+            actionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: 2019-04-26  add the button click listener here
+                }
             });
         }
 
@@ -149,10 +166,6 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
 
             // button uses this as pullup
             List<String> ss = manager.getGpioList();
-            for(String s:ss){
-                System.out.println(s);
-            }
-
             Gpio buttonPullupGpio = manager.openGpio("GPIO2_IO02");
             buttonPullupGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_HIGH);
 
@@ -316,7 +329,7 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
                 default:
                     Log.d(TAG, String.format("No button action, state = %s", mState));
                     break;
-                }
+            }
 
             mMainHandler.postDelayed(new Runnable() {
 
@@ -579,7 +592,7 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
 
             // Drawing op
             final Line current = mDrawingLines.get(i);
-            final int nextIndex = i+1;
+            final int nextIndex = i + 1;
             mBackgroundHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -646,7 +659,7 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
 
         mDrawingLines.clear();
 
-        for (int  i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             mDrawingLines.add(new Line(new Point(0, 0), new Point(5, 0), 0));
             mDrawingLines.add(new Line(new Point(5, 0), new Point(10, 0), 1));
             mDrawingLines.add(new Line(new Point(10, 0), new Point(15, 0), 2));
@@ -692,10 +705,10 @@ public class MainActivity extends Activity implements ImageReader.OnImageAvailab
         Point p2 = current.getPoint2();
         if (p1.x == p2.x) { // vertical line
             double adjustment;
-            if  (p1.x > 1) { // right side
+            if (p1.x > 1) { // right side
                 adjustment = (float) mRobotConfig.getSpacingAdjustRight() / 10.0;
                 Log.d("gap", String.format("adjusting right gap by %f mm", adjustment));
-            } else  {  // left side
+            } else {  // left side
                 adjustment = (float) mRobotConfig.getSpacingAdjustLeft() / 10.0;
                 Log.d("gap", String.format("adjusting left gap by %f mm", adjustment));
             }
